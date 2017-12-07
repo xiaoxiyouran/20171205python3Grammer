@@ -1,0 +1,119 @@
+class Student(object):
+    '''
+    类描述...
+    '''
+    cls_name = 'Student class'      # Student.cls_name  所有对象都能访问
+    count = 0                       # 静态类变量
+    __slots__ = ('name', 'age')     # 用tuple定义允许绑定的属性名称,对子类不起作用,对绑定类方法不起作用
+     __slots__ = ()                 # 禁止外部动态绑定属性
+    def __init__(self, name, score):
+        self.__name = name
+        self.__score = score
+        Student.count += 1;
+
+    def __del__(self):
+        Student.count += -1;
+
+    def __len__(self): # len(object)
+        return 100;
+
+    def __print__(self):
+         print( "x 的值是{0:.1f}".format(self.x))
+
+    def _private_fn(self): # 内部函数
+        pass
+
+    def print_score(self):
+        print('%s: %s' % (self.__name, self.__score))
+
+    def set_score(self,value):    # 不用对象设值,用方法可以做类型检查
+        if not isinstance(value, int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value > 100:
+            raise ValueError('score must between 0 ~ 100!')
+        self.__score = value
+
+    def get_score(self):
+        return self.__score
+
+    def has_score(self):
+        return score != None
+
+
+
+# 删除对象
+del obj
+# 删除某个属性
+del obj.name
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------第二代类模板
+class Student(object):
+    '''
+    类描述...
+    '''
+    cls_name = 'Student class'      # Student.cls_name  所有对象都能访问
+    count = 0                       # 静态类变量
+     __slots__ = ()                 # 禁止外部动态绑定属性
+    def __init__(self, name, score):
+        self._name = name
+        self._score = score
+        Student.count += 1;
+
+    def __del__(self):
+        Student.count += -1;
+
+    def __len__(self): # len(object)
+        return 100;
+
+    def __str__(self):   # 打印一个对象 print(obj)
+        return 'Student object (name=%s)' % self.name
+    __repr__ = __str__  # 打印开发者看到的字符串
+
+    def _private_fn(self): # 内部函数
+        pass
+
+    def print_score(self):
+        print('%s: %s' % (self._name, self._score))
+
+    def set_score(self,value):    # 不用对象设值,用方法可以做类型检查
+        if not isinstance(value, int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value > 100:
+            raise ValueError('score must between 0 ~ 100!')
+        self._score = value
+
+    def get_score(self):
+        return self._score
+
+    def has_score(self):
+        return score != None
+
+    # 直接用 obj.width 访问
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, value):
+        self._width = value
+
+# 可迭代对象
+
+class Array(object):
+    def __init__(self,*arg):
+        s._l = arg
+        s._index = 0
+    def __iter__(self):
+        return self # 实例本身就是迭代对象，故返回自己
+
+    def __next__(self):
+        ret = s._l[s._index]
+        s._index ++
+        return ret
+
+
+
+
+

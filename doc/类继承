@@ -1,0 +1,66 @@
+继承
+
+class Animal(object):
+    def run(self):      # 接口
+        print('Animal is running...')
+
+
+class Dog(Animal):
+    def run(self): # 覆盖父类方法
+        print('Dog is running...')
+class Cat(Animal):
+    def run(self):
+        print('Cat is running...')
+
+
+def run_twice(animal):
+    animal.run()
+
+class Tortoise(Animal):
+    def run(self):
+        print('Tortoise is running slowly...')
+
+
+MixIn 将多个类混合在一起
+###-----------------------------------------------------------------------------------------------------------------  class(begin)
+### TODO: 正确的做法是采用多重继承。首先，主要的类层次仍按照哺乳类和鸟类设计
+class Animal(object):
+    pass
+
+# 大类:
+class Mammal(Animal):
+    pass
+
+class Bird(Animal):
+    pass
+
+###=================================================================================================================
+
+###-----------------------------------------------------------------------------------------------------------------  class(begin)
+### TODO: 要给动物再加上Runnable和Flyable的功能
+class RunnableMixIn(object):
+    def run(self):
+        print('Running...')
+
+class RunnableMixIn(object):
+    def fly(self):
+        print('Flying...')
+
+###=================================================================================================================
+###-----------------------------------------------------------------------------------------------------------------  class(begin)
+### TODO: 多重继承的子类,MixIn
+
+# 各种动物:
+class Dog(Mammal, RunnableMixIn):
+    pass
+
+class Bat(Mammal, RunnableMixIn):
+    pass
+
+class Parrot(Bird):
+    pass
+
+class Ostrich(Bird):
+    pass
+
+###=================================================================================================================

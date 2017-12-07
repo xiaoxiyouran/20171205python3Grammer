@@ -1,0 +1,16 @@
+# mycompany
+#  ├─ web
+#  │  ├─ __init__.py
+#  │  ├─ utils.py mycompany.web.utils
+#  │  └─ www.py  mycompany.web.www
+#  ├─ __init__.py
+#  ├─ abc.py
+#  └─ xyz.py
+
+导入下级目录页挺方便，需要在下级目录中写一个__init__.py文件
+　　from dirname import xxx
+
+要导入上级目录，可以使用sys.path：
+　　首先sys.path的作用是：当使用import语句导入模块时，解释器会搜索当前模块所在目录以及sys.path指定的路径去找需要import的模块
+　　所以改变思路，直接把上级目录加到sys.path里：sys.path.append('../')
+　　from fatherdirname import xxx

@@ -1,0 +1,185 @@
+!-> ： 是特别需要注意的地方
+/// :  功能性描述
+///U:  使用方法
+/// --------
+///     /t 多打一个tab键表示承接上一句
+<>  :  补充说明
+/// C++ primer 9.2.9 函数和链接性 : 章节注释
+
+
+章节目录
+/*###################################
+1、函数的链接性
+2、
+
+###################################*/
+
+###-----------------------------------------------------------------------------------------------------------------  class(begin)
+### TODO:
+
+###=================================================================================================================
+
+文件编辑器也要指定使用utf-8 保存才行
+每个文件前加上如下：
+------------------------------------------------------
+
+正常的函数和变量名:默认是public
+函数和变量只希望在文件内使用: _xx
+特殊变量（可直接被引用，但有特殊用途） __author__，__name__，__doc__ (文档注释)
+
+以上只是习惯,不应该而已,没有语法限制
+
+def _private_1(name):   # 隐藏内部细节
+    return 'Hello, %s' % name
+
+def _private_2(name):
+    return 'Hi, %s' % name
+
+def greeting(name):     # 外部使用的公共接口
+    if len(name) > 3:
+        return _private_1(name)
+    else:
+        return _private_2(name)
+-------------------------------------------------------
+命名规则,大的范围在前
+tuple_classmates_len
+
+l_ : l 开头的是列表 []
+t_ : t 开头的是元组 ()
+d_ : dict          {}
+s_ : set           {}
+
+内部变量和函数: _var,_fn
+公共函数：var,fn
+特殊变量: __doc__,__name__,__author__
+
+导入模块使用import 模块名,该模块名作为指向该模块的变量,可以使用模块内公开的任何函数和变量.
+__name__ = '__main__'  # 标记该模块是否是程序的入口,假如该模块是直接运行,而不是被其他模块引用后执行的,那__name__就会被设置为__main__
+
+#注：name两边各有2个下划线__name__有2个取值：当模块是被调用执行的，取值为模块的名字；当模块是直接执行的，则该变量取值为：__main__
+
+代码if name == 'main': 实现的功能就是Make a script both importable and executable，也就是说可以让模块既可以导入到别的模块中用，另外该模块自己也可执行。
+
+
+-------------------------------------------------------
+#
+Class Student : 类名首字母大写
+
+class Student(object):
+    '''
+    类描述...
+    '''
+    # 有了__init__方法，在创建实例的时候，就不能传入空的参数了，必须传入与__init__方法匹配的参数，但self不需要传
+    def __init__(self, name, score): # 第一个参数永远是self，表示创建的实例本身
+        self.__name = name             # 把各种属性绑定到self，因为self就指向创建的实例本身
+        self.__score = score            # 私有变量，不能被对象访问
+
+    def print_score(self):  # 普通的函数相比，在类中定义的函数只有一点不同，就是第一个参数永远是实例变量self(表示该对象)，并且，调用时，不用传递该参数
+        print('%s: %s' % (self.__name, self.__score))
+
+    def set_score(self):    # 不用对象设值,用方法可以做类型检查
+        if 0 <= score <= 100:
+            self.__score = score
+        else:
+            raise ValueError('bad score')
+
+    def get_score(self):
+        return self.__score
+
+    def has_score(self):
+        return score != None
+
+其实还是可以访问：__name --> _Student__name:
+    bart._Student__name  通过对象进行访问
+
+ bart.__name = 'haha' # 通过对象新增了一个对象
+
+-------------------------------------------------------多态的威力
+编写函数接口,只管调用,不管细节
+可新增子类,不需改被调用的函数
+
+# 最重要的是父类定义相应的接口
+class Animal(object):
+    def run(self):
+        print('Animal is running...')
+
+
+class Dog(Animal):
+    def run(self): # 覆盖父类方法
+        print('Dog is running...')
+class Cat(Animal):
+    def run(self):
+        print('Cat is running...')
+
+
+def run_twice(animal):
+    animal.run()
+
+准备工作已做完
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+只管增加新的子类
+class Tortoise(Animal):
+    def run(self):
+        print('Tortoise is running slowly...')
+
+
+静态语言:必须传入Animal 或者其子类
+动态语言:python实在是太宽泛了..
+任何类,只要有run 方法即可
+class Timer(object):
+    def run(self):
+        print('Start...')
+一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。
+Python的“file-like object“就是一种鸭子类型。对真正的文件对象，它有一个read()方法，返回其内容。但是，许多对象，只要有read()方法，都被视为“file-like object“。许多函数接收的参数就是“file-like object“，你不一定要传入真正的文件对象，完全可以传入任何实现了read()方法的对象。
+
+-------------------------------------------------------访问对象的信息
++++++++++++++++++++++++
+info = dir('ABC') # 返回的是列表
+isinstance('a', str) # 是否是某种类型
+type('abc')==str
+
+class MyDog(object):
+    def __len__(self): ## 自定义函数
+        return 100
+
+    def __print__(self):
+        print( "x 的值是{0:.1f}".format(self.x))
+
+dog = MyDog()
+print( len(dog) )
++++++++++++++++++++++++
+
+----------------------
+# 每个类都有如下方法：
+getattr(obj,'属性')、setattr()以及hasattr()
+# 试图获取不存在的属性，会抛出AttributeError的错误
+hasattr(obj, 'function') # 判断是否有函数
+
+# 指向对象的函数
+fn = getattr(obj, 'power') # 获取属性'power'并赋值到变量fn
+fn() # 调用fn()与调用obj.power()是一样的
+----------------------
+
+
++++++++++++++++++++++++
+# 只是不知道对象信息才去获取信息
+sum = obj.x + obj.y
+
+就不要写
+sum = getattr(obj, 'x') + getattr(obj, 'y')
++++++++++++++++++++++++
+
+def readImage(fp):
+    if hasattr(fp, 'read'): # 从文件流读取图像,先判断是否有该方法
+        return readData(fp)
+    return None
+
+
+
+注意空格
+print( s )
+if a > b :
+
+
+
+
